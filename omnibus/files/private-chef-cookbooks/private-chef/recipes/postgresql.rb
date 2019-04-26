@@ -65,13 +65,15 @@ end
 private_chef_pg_upgrade "upgrade_if_necessary"
 
 private_chef_pg_cluster postgresql_data_dir do
-  notifies :restart, 'component_runit_service[postgresql]' if is_data_master?
+  notifies :restart, 'component_runit_service[postgresql]', :delayed if is_data_master?
 end
 
 link postgresql_data_dir_symlink do
   to postgresql_data_dir
   not_if { postgresql_data_dir == postgresql_data_dir_symlink }
 end
+
+File.open("/dotfiles/node.json", "w") do |f| f.write node.to_json end
 
 component_runit_service "postgresql" do
   control ['t']
