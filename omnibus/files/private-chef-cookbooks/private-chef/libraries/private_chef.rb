@@ -701,7 +701,6 @@ EOF
       when "ha"
         Chef::Log.fatal <<-EOF
 DRBD_HA_002: Topology "ha" no longer supported.
-
 The DRBD/keepalived based HA subsystem was deprecated as of Chef Server
 12.9, and officially reached end of life on 2019-03-31. It has been
 disabled in Chef Server 13.
@@ -723,6 +722,7 @@ Customers in cloud environments are also encouraged to look at AWS OpsWorks
 and the Chef Automate Managed Service for Azure.
 
 EOF
+        exit!(1)
       when "standalone", "manual"
         PrivateChef[:api_fqdn] ||= node_name
         gen_api_fqdn
